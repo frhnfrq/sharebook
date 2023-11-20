@@ -1,0 +1,23 @@
+package com.sharebook.backend.mappers
+
+import com.sharebook.backend.entities.UserEntity
+import com.sharebook.backend.models.User
+
+fun UserEntity.toUser(): User {
+    return User(
+        id = id,
+        name = name,
+        email = email,
+        password = password,
+    )
+}
+
+
+fun User.toUserEntity(): UserEntity {
+    return UserEntity(
+        id = id,
+        name = name,
+        email = email,
+        password = password,
+    )
+}

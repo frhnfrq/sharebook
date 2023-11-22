@@ -2,9 +2,14 @@ package com.sharebook.backend.services
 
 import com.sharebook.backend.dto.RegisterDto
 import com.sharebook.backend.entities.UserEntity
+import com.sharebook.backend.exception.CustomException
+import com.sharebook.backend.exception.ErrorCode
+import com.sharebook.backend.mappers.toUser
+import com.sharebook.backend.models.User
 import com.sharebook.backend.repository.UserRepository
 import com.sharebook.backend.utils.JWTUtil
-import org.springframework.security.core.userdetails.User
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.userdetails.User as CoreUser
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -35,10 +40,20 @@ class AuthService(
         return Result.failure(Exception("User already exists"))
     }
 
+    fun getUser(authentication: Authentication): User {
+        val userEntity = userRepository.findByEmail(authentication.name)
+
+        if (userEntity == null) {
+            throw CustomException(ErrorCode.USER_NOT_FOUND)
+        } else {
+            return userEntity.toUser()
+        }
+    }
+
     override fun loadUserByUsername(username: String): UserDetails {
         val user = userRepository.findByEmail(username) ?: throw UsernameNotFoundException("User not found")
 
-        return User(
+        return CoreUser(
             user.email,
             user.password,
             listOf(),

@@ -1,6 +1,8 @@
 package com.sharebook.backend.mappers
 
+import com.sharebook.backend.entities.BookEntity
 import com.sharebook.backend.entities.UserEntity
+import com.sharebook.backend.models.Book
 import com.sharebook.backend.models.User
 
 fun UserEntity.toUser(): User {

@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.web.cors.CorsConfiguration
 
 
 @Configuration
@@ -30,6 +31,15 @@ class SecurityConfig(
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain? {
         http
+            .cors().configurationSource {
+                val cors = CorsConfiguration()
+                cors.allowedOrigins =
+                    listOf("http://localhost:3000", "http://127.0.0.1:3000")
+                cors.setAllowedMethods(listOf("GET", "POST", "PUT", "DELETE", "OPTIONS"))
+                cors.allowedHeaders = listOf("*")
+                return@configurationSource cors
+            }
+            .and()
             .csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests()
@@ -43,4 +53,14 @@ class SecurityConfig(
             )
         return http.build()
     }
+
+//    @Bean
+//    fun corsConfigurationSource(): CorsConfigurationSource {
+//        val configuration = CorsConfiguration()
+//        configuration.allowedOrigins = mutableListOf("http://localhost:3000/", "http://127.0.0.1:3000/")
+//        configuration.setAllowedMethods(mutableListOf("*"))
+//        val source = UrlBasedCorsConfigurationSource()
+//        source.registerCorsConfiguration("/**", configuration)
+//        return source
+//    }
 }

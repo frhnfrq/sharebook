@@ -6,3 +6,10 @@ data class User(
     val email: String,
     val password: String,
 )
+
+
+data class SafeUser(
+    val id: Long = 0,
+    val name: String,
+    val email: String,
+)

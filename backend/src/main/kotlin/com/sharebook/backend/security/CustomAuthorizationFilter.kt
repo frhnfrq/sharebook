@@ -54,6 +54,8 @@ class CustomAuthorizationFilter(
                         else -> {
                             println(e.message)
                             println(e.printStackTrace())
+                            if (e.message != null)
+                                e.message
                             "Something went wrong!"
                         }
                     }

@@ -65,7 +65,8 @@ class BackendApplication {
                     sampleImages = listOf(""),
                     available = true,
                     swappable = true,
-                    user = user!!
+                    user = user!!,
+                    onRent = false,
                 )
             )
 
@@ -78,7 +79,8 @@ class BackendApplication {
                     sampleImages = listOf(""),
                     available = true,
                     swappable = true,
-                    user = user
+                    user = user,
+                    onRent = false,
                 )
             )
 
@@ -91,7 +93,8 @@ class BackendApplication {
                     sampleImages = listOf(""),
                     available = true,
                     swappable = true,
-                    user = user2!!
+                    user = user2!!,
+                    onRent = false,
                 )
             )
 

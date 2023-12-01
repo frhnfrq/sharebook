@@ -3,6 +3,7 @@ package com.sharebook.backend.controllers
 import com.sharebook.backend.dto.CreateBookRequestDto
 import com.sharebook.backend.dto.ResponseDto
 import com.sharebook.backend.models.Book
+import com.sharebook.backend.models.BookExchange
 import com.sharebook.backend.models.BookRequest
 import com.sharebook.backend.services.BookService
 import org.springframework.security.core.Authentication
@@ -61,7 +62,7 @@ class BookController(
     }
 
     @PostMapping("request/approve/{id}")
-    fun approveRequest(authentication: Authentication, @PathVariable("id") id: Long): ResponseDto<Boolean> {
+    fun approveRequest(authentication: Authentication, @PathVariable("id") id: Long): ResponseDto<BookExchange> {
         val result = bookService.approveBookRequest(authentication, bookRequestId = id)
         return ResponseDto(result)
     }

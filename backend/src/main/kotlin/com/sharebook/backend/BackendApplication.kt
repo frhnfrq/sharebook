@@ -1,6 +1,8 @@
 package com.sharebook.backend
 
 import com.sharebook.backend.dto.RegisterDto
+import com.sharebook.backend.entities.BookEntity
+import com.sharebook.backend.repository.BookRepository
 import com.sharebook.backend.repository.UserRepository
 import com.sharebook.backend.services.AuthService
 import com.sharebook.backend.utils.JWTUtil
@@ -27,6 +29,7 @@ class BackendApplication {
     fun run(
         authService: AuthService,
         userRepository: UserRepository,
+        bookRepository: BookRepository,
     ): CommandLineRunner {
         return CommandLineRunner { args ->
             authService.register(
@@ -39,6 +42,32 @@ class BackendApplication {
 
             val user = userRepository.findByEmail("farhanfarooqui2099@gmail.com")
 
+
+            bookRepository.save(
+                BookEntity(
+                    name = "Alchemy",
+                    authors = listOf("Paulo Coelho", "Random Author"),
+                    genre = listOf("Adventure"),
+                    coverImage = "",
+                    sampleImages = listOf(""),
+                    available = true,
+                    swappable = true,
+                    user = user!!
+                )
+            )
+
+            bookRepository.save(
+                BookEntity(
+                    name = "Alchemy 2",
+                    authors = listOf("Farhan", "Furqan"),
+                    genre = listOf("Horror", "Fantasy"),
+                    coverImage = "hello.jpg",
+                    sampleImages = listOf(""),
+                    available = true,
+                    swappable = true,
+                    user = user
+                )
+            )
 
         }
     }

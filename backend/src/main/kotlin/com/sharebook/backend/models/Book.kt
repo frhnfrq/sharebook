@@ -9,4 +9,5 @@ data class Book(
     val sampleImages: List<String>,
     val available: Boolean = true,
     val swappable: Boolean = true,
+    val price: Int = 0,
 )

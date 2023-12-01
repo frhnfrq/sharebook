@@ -21,6 +21,8 @@ data class BookEntity(
     val sampleImages: List<String>,
     val available: Boolean = true,
     val swappable: Boolean = true,
+    @Column(columnDefinition = "integer default 0")
+    val price: Int = 0,
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     val user: UserEntity,

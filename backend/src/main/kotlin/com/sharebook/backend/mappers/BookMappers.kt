@@ -14,6 +14,7 @@ fun BookEntity.toBook(): Book {
         sampleImages = sampleImages,
         available = available,
         swappable = swappable,
+        price = price,
     )
 }
 
@@ -27,6 +28,7 @@ fun Book.toBookEntity(user: User): BookEntity {
         sampleImages = sampleImages,
         available = available,
         swappable = swappable,
+        price = price,
         user = user.toUserEntity(),
     )
 }

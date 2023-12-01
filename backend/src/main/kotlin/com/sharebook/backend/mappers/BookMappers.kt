@@ -12,14 +12,14 @@ fun BookEntity.toBook(): Book {
         genre = genre,
         coverImage = coverImage,
         sampleImages = sampleImages,
-        available = available,
+        available = available && !onRent,
         swappable = swappable,
         price = price,
         user = user.toUser().toSafeUser(),
     )
 }
 
-fun Book.toBookEntity(user: User): BookEntity {
+fun Book.toBookEntity(user: User, onRent: Boolean): BookEntity {
     return BookEntity(
         id = id,
         name = name,
@@ -31,5 +31,6 @@ fun Book.toBookEntity(user: User): BookEntity {
         swappable = swappable,
         price = price,
         user = user.toUserEntity(),
+        onRent = onRent,
     )
 }

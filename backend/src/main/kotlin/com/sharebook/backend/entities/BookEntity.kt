@@ -26,4 +26,5 @@ data class BookEntity(
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     val user: UserEntity,
+    val onRent: Boolean,
 )

@@ -17,11 +17,11 @@ fun BookRequestEntity.toBookRequest(): BookRequest {
     )
 }
 
-fun BookRequest.toBookRequestEntity(user: User): BookRequestEntity {
+fun BookRequest.toBookRequestEntity(user: User, bookOnRent: Boolean, swapBookOnRent: Boolean): BookRequestEntity {
     return BookRequestEntity(
         id = id,
-        book = book.toBookEntity(user),
-        swapBook = swapBook?.toBookEntity(user),
+        book = book.toBookEntity(user, bookOnRent),
+        swapBook = swapBook?.toBookEntity(user, swapBookOnRent),
         user = user.toUserEntity(),
         createdAt = createdAt,
         updatedAt = updatedAt,

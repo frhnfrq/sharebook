@@ -2,21 +2,25 @@ package com.sharebook.backend.services
 
 import com.sharebook.backend.dto.CreateBookRequestDto
 import com.sharebook.backend.entities.BookEntity
+import com.sharebook.backend.entities.BookExchangeEntity
 import com.sharebook.backend.mappers.*
 import com.sharebook.backend.models.Book
+import com.sharebook.backend.models.BookExchange
 import com.sharebook.backend.models.BookRequest
+import com.sharebook.backend.repository.BookExchangeRepository
 import com.sharebook.backend.repository.BookRepository
 import com.sharebook.backend.repository.BookRequestRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
-import java.lang.Exception
+import java.time.LocalDateTime
 
 @Service
 class BookService(
     private val authService: AuthService,
     private val bookRepository: BookRepository,
     private val bookRequestRepository: BookRequestRepository,
+    private val bookExchangeRepository: BookExchangeRepository,
 ) {
 
     fun getBooks(authentication: Authentication, query: String?): Result<List<Book>> {
@@ -41,14 +45,19 @@ class BookService(
 
     fun createBook(authentication: Authentication, book: Book): Result<Book> {
         val user = authService.getUser(authentication)
-        val createdBookEntity = bookRepository.save(book.toBookEntity(user))
+        val createdBookEntity = bookRepository.save(book.toBookEntity(user, onRent = false))
         return Result.success(createdBookEntity.toBook())
     }
 
     fun editBook(authentication: Authentication, book: Book): Result<Book> {
         val user = authService.getUser(authentication)
-        val createdBookEntity = bookRepository.save(book.toBookEntity(user))
-        return Result.success(createdBookEntity.toBook())
+        val existingBook = bookRepository.findById(book.id)
+        if (existingBook.isPresent) {
+            val createdBookEntity = bookRepository.save(book.toBookEntity(user, onRent = existingBook.get().onRent))
+            return Result.success(createdBookEntity.toBook())
+        } else {
+            return Result.failure(Exception("Invalid book received"))
+        }
     }
 
     fun deleteBook(authentication: Authentication, id: Long): Result<Boolean> {
@@ -75,6 +84,15 @@ class BookService(
             return Result.failure(Exception("You have already requested for this book"))
         }
 
+        if (bookEntity.onRent) {
+            return Result.failure(Exception("This book is already on rent"))
+        }
+
+        if (swapBookEntity?.onRent == true) {
+            return Result.failure(Exception("The book you chose to swap with is already on rent"))
+        }
+
+
         val bookRequest = BookRequest(
             book = bookEntity.toBook(),
             user = user.toSafeUser(),
@@ -84,7 +102,13 @@ class BookService(
             approved = false,
             rejected = false,
         )
-        val bookRequestEntity = bookRequestRepository.save(bookRequest.toBookRequestEntity(user))
+        val bookRequestEntity = bookRequestRepository.save(
+            bookRequest.toBookRequestEntity(
+                user,
+                bookOnRent = false,
+                swapBookOnRent = false
+            )
+        )
 
         return Result.success(bookRequestEntity.toBookRequest())
     }
@@ -92,7 +116,7 @@ class BookService(
     fun approveBookRequest(
         authentication: Authentication,
         bookRequestId: Long,
-    ): Result<Boolean> {
+    ): Result<BookExchange> {
         val user = authService.getUser(authentication)
         val bookRequestEntity = bookRequestRepository.findById(bookRequestId).get()
         if (bookRequestEntity.book.user.id != user.id) {
@@ -110,7 +134,22 @@ class BookService(
 
         bookRequestRepository.save(bookRequestEntity.copy(rejected = false, approved = true))
 
-        return Result.success(true)
+
+        val bookExchangeEntity = bookExchangeRepository.save(
+            BookExchangeEntity(
+                book = bookRequestEntity.book,
+                swapBook = bookRequestEntity.swapBook,
+                bookOwnerUser = user.toUserEntity(),
+                bookRenterUser = bookRequestEntity.user,
+                createdAt = LocalDateTime.now(),
+                dueAt = LocalDateTime.now().plusDays(7),
+                returned = false,
+                price = bookRequestEntity.book.price,
+                bookRequest = bookRequestEntity
+            ),
+        )
+
+        return Result.success(bookExchangeEntity.toBookExchange())
     }
 
     fun rejectBookRequest(
@@ -126,6 +165,24 @@ class BookService(
         bookRequestRepository.save(bookRequestEntity.copy(rejected = true))
 
         return Result.success(true)
+    }
+
+
+    fun returnBook(
+        authentication: Authentication,
+        bookExchangeId: Long
+    ): Result<BookExchange> {
+        val bookExchangeEntity = bookExchangeRepository.findById(bookExchangeId)
+        if (bookExchangeEntity.isPresent) {
+            val updatedBookExchangeEntity = bookExchangeRepository.save(bookExchangeEntity.get().copy(returned = true))
+            bookRepository.save(bookExchangeEntity.get().book.copy(onRent = false))
+            if (bookExchangeEntity.get().swapBook != null) {
+                bookRepository.save(bookExchangeEntity.get().swapBook!!.copy(onRent = false))
+            }
+            return Result.success(updatedBookExchangeEntity.toBookExchange())
+        } else {
+            return Result.failure(Exception("Invalid book exchange ID"))
+        }
     }
 
 }

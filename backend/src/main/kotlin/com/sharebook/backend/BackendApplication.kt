@@ -52,7 +52,7 @@ class BackendApplication {
                 )
             )
 
-            val user = userRepository.findByEmail("farhanfarooqui2099@gmail.com")
+            val user = userRepository.findByEmail("farhan@gmail.com")
             val user2 = userRepository.findByEmail("feona@gmail.com")
 
 

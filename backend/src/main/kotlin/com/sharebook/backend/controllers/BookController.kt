@@ -1,7 +1,9 @@
 package com.sharebook.backend.controllers
 
+import com.sharebook.backend.dto.CreateBookRequestDto
 import com.sharebook.backend.dto.ResponseDto
 import com.sharebook.backend.models.Book
+import com.sharebook.backend.models.BookRequest
 import com.sharebook.backend.services.BookService
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
@@ -41,6 +43,27 @@ class BookController(
     fun deleteBook(authentication: Authentication, @PathVariable("id") id: Long): ResponseDto<Boolean> {
         val bookResult = bookService.deleteBook(authentication, id)
         return ResponseDto(bookResult)
+    }
+
+    @PostMapping("request")
+    fun requestBook(
+        authentication: Authentication,
+        @RequestBody createBookRequestDto: CreateBookRequestDto
+    ): ResponseDto<BookRequest> {
+        val result = bookService.createBookRequest(authentication, createBookRequestDto)
+        return ResponseDto(result)
+    }
+
+    @PostMapping("request/approve/{id}")
+    fun approveRequest(authentication: Authentication, @PathVariable("id") id: Long): ResponseDto<Boolean> {
+        val result = bookService.approveBookRequest(authentication, bookRequestId = id)
+        return ResponseDto(result)
+    }
+
+    @PostMapping("request/reject/{id}")
+    fun rejectRequest(authentication: Authentication, @PathVariable("id") id: Long): ResponseDto<Boolean> {
+        val result = bookService.rejectBookRequest(authentication, bookRequestId = id)
+        return ResponseDto(result)
     }
 
 }

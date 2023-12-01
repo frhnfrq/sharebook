@@ -18,4 +18,6 @@ interface BookRepository : JpaRepository<BookEntity, Long> {
     )
     fun searchByQuery(query: String): List<BookEntity>
 
+    fun findAllByUserIsNot(userEntity: UserEntity): List<BookEntity>
+
 }

@@ -15,6 +15,7 @@ fun BookEntity.toBook(): Book {
         available = available,
         swappable = swappable,
         price = price,
+        user = user.toUser().toSafeUser(),
     )
 }
 

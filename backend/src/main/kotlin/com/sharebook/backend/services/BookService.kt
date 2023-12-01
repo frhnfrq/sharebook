@@ -30,6 +30,15 @@ class BookService(
         return Result.success(books)
     }
 
+    fun getSuggestedBooks(authentication: Authentication): Result<List<Book>> {
+        val user = authService.getUser(authentication)
+        val books: MutableList<Book> = mutableListOf()
+
+        books.addAll(bookRepository.findAllByUserIsNot(user.toUserEntity()).map(BookEntity::toBook))
+
+        return Result.success((books))
+    }
+
     fun createBook(authentication: Authentication, book: Book): Result<Book> {
         val user = authService.getUser(authentication)
         val createdBookEntity = bookRepository.save(book.toBookEntity(user))
@@ -87,7 +96,7 @@ class BookService(
         }
 
         val otherRequestOfTheSameBook =
-            bookRequestRepository.findAllByBookAndApprovedAndRejectedAndIdNot(
+            bookRequestRepository.findAllByBookAndApprovedAndRejectedAndIdIsNot(
                 bookEntity = bookRequestEntity.book,
                 approved = false,
                 rejected = false,

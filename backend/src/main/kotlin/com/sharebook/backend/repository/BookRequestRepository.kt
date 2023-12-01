@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface BookRequestRepository : JpaRepository<BookRequestEntity, Long> {
 
-    fun findAllByBookAndApprovedAndRejectedAndIdNot(
+    fun findAllByBookAndApprovedAndRejectedAndIdIsNot(
         bookEntity: BookEntity,
         approved: Boolean,
         rejected: Boolean,

@@ -10,4 +10,5 @@ data class Book(
     val available: Boolean = true,
     val swappable: Boolean = true,
     val price: Int = 0,
+    val user: SafeUser,
 )

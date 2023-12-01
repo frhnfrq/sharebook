@@ -63,7 +63,11 @@ class BookService(
     ): Result<BookRequest> {
         val user = authService.getUser(authentication)
         val bookEntity = bookRepository.findById(createBookRequestDto.bookId).get()
-        val swapBookEntity = bookRepository.findByIdOrNull(createBookRequestDto.swapBookId)
+        var swapBookEntity: BookEntity? = null
+
+        if (createBookRequestDto.swapBookId != null) {
+            swapBookEntity = bookRepository.findByIdOrNull(createBookRequestDto.swapBookId)
+        }
 
         val previousRequest = bookRequestRepository.findByUserAndBookAndRejected(user.toUserEntity(), bookEntity, false)
 

@@ -39,12 +39,21 @@ class BackendApplication {
             authService.register(
                 RegisterDto(
                     name = "Farhan",
-                    email = "farhanfarooqui2099@gmail.com",
+                    email = "farhan@gmail.com",
+                    password = "12345"
+                )
+            )
+
+            authService.register(
+                RegisterDto(
+                    name = "Feona",
+                    email = "feona@gmail.com",
                     password = "12345"
                 )
             )
 
             val user = userRepository.findByEmail("farhanfarooqui2099@gmail.com")
+            val user2 = userRepository.findByEmail("feona@gmail.com")
 
 
             bookRepository.save(
@@ -70,6 +79,19 @@ class BackendApplication {
                     available = true,
                     swappable = true,
                     user = user
+                )
+            )
+
+            bookRepository.save(
+                BookEntity(
+                    name = "Alchemy 3",
+                    authors = listOf("Nick Pirog", "Furqan"),
+                    genre = listOf("Horror", "Fantasy"),
+                    coverImage = "",
+                    sampleImages = listOf(""),
+                    available = true,
+                    swappable = true,
+                    user = user2!!
                 )
             )
 

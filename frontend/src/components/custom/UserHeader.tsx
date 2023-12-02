@@ -10,6 +10,8 @@ import {
   NavigationMenuTrigger,
 } from "../ui/navigation-menu";
 import { LogoutRounded, Person2Rounded } from "@mui/icons-material";
+import { SearchRounded } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
 
 const UserHeader = () => {
   const { user, logout } = useAuth();
@@ -23,6 +25,12 @@ const UserHeader = () => {
         </Link>
 
         <div className="flex justify-center items-center">
+          <Link className="mr-10" to={"/search"}>
+            <IconButton>
+              <SearchRounded htmlColor="#FFFFFF" />
+            </IconButton>
+          </Link>
+
           <Link className="mr-10 hover:underline" to={"/my-books"}>
             My Books
           </Link>

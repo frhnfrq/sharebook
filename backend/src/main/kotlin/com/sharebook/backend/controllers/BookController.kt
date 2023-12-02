@@ -22,6 +22,12 @@ class BookController(
         return ResponseDto(booksResult)
     }
 
+    @GetMapping("{id}")
+    fun getBook(authentication: Authentication, @PathVariable("id") id: Long): ResponseDto<Book> {
+        val bookResult = bookService.getBook(authentication, id)
+        return ResponseDto(bookResult)
+    }
+
     @GetMapping("suggestion")
     fun getSuggestedBooks(authentication: Authentication): ResponseDto<List<Book>> {
         val booksResult = bookService.getSuggestedBooks(authentication)

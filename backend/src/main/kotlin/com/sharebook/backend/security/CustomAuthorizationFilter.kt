@@ -22,7 +22,8 @@ class CustomAuthorizationFilter(
 
     private val publicEndpoints = listOf(
         "/api/login",
-        "/api/register"
+        "/api/register",
+        "/api/image"
     )
 
     override fun doFilterInternal(
@@ -30,7 +31,8 @@ class CustomAuthorizationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        if (publicEndpoints.contains(request.servletPath)) {
+        println(request.servletPath)
+        if (publicEndpoints.any { request.servletPath.contains(it) }) {
             filterChain.doFilter(request, response)
         } else {
             val authHeader = request.getHeader(AUTHORIZATION)

@@ -185,4 +185,13 @@ class BookService(
         }
     }
 
+    fun getBook(authentication: Authentication, id: Long): Result<Book> {
+        val bookEntity = bookRepository.findById(id)
+        if (bookEntity.isPresent) {
+            return Result.success(bookEntity.get().toBook())
+        } else {
+            return Result.failure(Exception("Invalid book ID"))
+        }
+    }
+
 }

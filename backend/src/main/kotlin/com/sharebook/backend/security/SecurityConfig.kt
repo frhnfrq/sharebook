@@ -35,7 +35,7 @@ class SecurityConfig(
                 val cors = CorsConfiguration()
                 cors.allowedOrigins =
                     listOf("http://localhost:3000", "http://127.0.0.1:3000")
-                cors.setAllowedMethods(listOf("GET", "POST", "PUT", "DELETE", "OPTIONS"))
+                cors.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 cors.allowedHeaders = listOf("*")
                 return@configurationSource cors
             }
@@ -45,6 +45,8 @@ class SecurityConfig(
             .authorizeRequests()
             .antMatchers("/api/register").permitAll()
             .antMatchers("/api/login").permitAll()
+            .antMatchers("/api/image").permitAll()
+            .antMatchers("/api/image/*").permitAll()
             .anyRequest().authenticated().and()
             .addFilter(CustomAuthenticationFilter(authenticationManager, jwtUtil))
             .addFilterBefore(

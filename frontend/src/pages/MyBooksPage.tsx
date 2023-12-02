@@ -15,9 +15,15 @@ import {
 
 import { ApiResponse, Book } from "../types"; // Import the Book type
 import axios from "../network/axios";
+import BookForm from "../components/BookForm";
+import { imageBaseURL } from "../network/axios";
 
 export default function MyBooksPage() {
+  const [isDialogOpen, setDialogOpen] = useState(false);
+
   const [books, setBooks] = useState<Book[]>([]);
+
+  const [selectedBook, setSelectedBook] = useState<Book | undefined>();
 
   const getBooks = async () => {
     try {
@@ -66,9 +72,27 @@ export default function MyBooksPage() {
     <div>
       <UserHeader />
       <div className="container mx-auto mt-8">
-        <Button variant="contained" color="primary">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setDialogOpen(true)}
+        >
           Add a Book
         </Button>
+
+        <BookForm
+          isOpen={selectedBook !== undefined || isDialogOpen}
+          onClose={() => {
+            setDialogOpen(false);
+            setSelectedBook(undefined);
+          }}
+          onSubmit={(newBook) => {
+            setDialogOpen(false);
+            getBooks();
+            setSelectedBook(undefined);
+          }}
+          initialBook={selectedBook}
+        />
 
         <Grid
           container
@@ -81,8 +105,8 @@ export default function MyBooksPage() {
                 <CardMedia
                   component="img"
                   alt={book.name}
-                  height="200"
-                  image={"https://placekitten.com/400/300"} // replace with actual image
+                  sx={{ height: "200px", objectFit: "cover" }}
+                  image={imageBaseURL + book.coverImage}
                   title={book.name}
                 />
                 <CardContent>
@@ -152,6 +176,17 @@ export default function MyBooksPage() {
                       label="Swappable"
                     />
                   </FormGroup>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => {
+                      setSelectedBook(book);
+                      // setDialogOpen(true);
+                    }}
+                    sx={{ mt: 2 }}
+                  >
+                    Edit
+                  </Button>
                 </CardContent>
               </Card>
             </Grid>

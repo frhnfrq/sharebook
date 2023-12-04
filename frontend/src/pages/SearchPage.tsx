@@ -103,6 +103,10 @@ export default function SearchPage() {
                       {book.name}
                     </Typography>
 
+                    <Typography variant="h6" mb={2}>
+                      {book.price} BDT
+                    </Typography>
+
                     <div className="mb-2">
                       <Typography
                         variant="subtitle2"

@@ -79,4 +79,10 @@ class BookController(
         return ResponseDto(result)
     }
 
+    @GetMapping("request/{id}")
+    fun getBookRequestsForBookId(authentication: Authentication, @PathVariable("id") id: Long): ResponseDto<List<BookRequest>> {
+        val result = bookService.getBookRequestsForBookId(authentication, bookId = id)
+        return ResponseDto(result)
+    }
+
 }

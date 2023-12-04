@@ -60,8 +60,12 @@ export default function HomePage() {
                       title={book.name}
                     />
                     <CardContent>
-                      <Typography variant="h6" component="div" mb={2}>
+                      <Typography variant="h5" component="div" mb={2}>
                         {book.name}
+                      </Typography>
+
+                      <Typography variant="h6" mb={2}>
+                        {book.price} BDT
                       </Typography>
 
                       <div className="mb-2">

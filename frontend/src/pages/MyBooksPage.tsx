@@ -17,6 +17,7 @@ import { ApiResponse, Book } from "../types"; // Import the Book type
 import axios from "../network/axios";
 import BookForm from "../components/BookForm";
 import { imageBaseURL } from "../network/axios";
+import { Link } from "react-router-dom";
 
 export default function MyBooksPage() {
   const [isDialogOpen, setDialogOpen] = useState(false);
@@ -101,94 +102,101 @@ export default function MyBooksPage() {
         >
           {books.map((book) => (
             <Grid item key={book.id} xs={12} sm={6} md={4} lg={3}>
-              <Card>
-                <CardMedia
-                  component="img"
-                  alt={book.name}
-                  sx={{ height: "200px", objectFit: "cover" }}
-                  image={imageBaseURL + book.coverImage}
-                  title={book.name}
-                />
-                <CardContent>
-                  <Typography variant="h6" component="div" mb={2}>
-                    {book.name}
-                  </Typography>
-
-                  <div className="mb-2">
-                    <Typography
-                      variant="subtitle2"
-                      color="textSecondary"
-                      component="div"
-                    >
-                      Authors:
+              <Link to={"/books/" + book.id}>
+                <Card>
+                  <CardMedia
+                    component="img"
+                    alt={book.name}
+                    sx={{ height: "200px", objectFit: "cover" }}
+                    image={imageBaseURL + book.coverImage}
+                    title={book.name}
+                  />
+                  <CardContent>
+                    <Typography variant="h6" component="div" mb={2}>
+                      {book.name}
                     </Typography>
-                    {book.authors.map((author, index) => (
-                      <Chip key={index} label={author} className="mr-2" />
-                    ))}
-                  </div>
 
-                  <div className="mb-2">
-                    <Typography
-                      variant="subtitle2"
-                      color="textSecondary"
-                      component="div"
-                    >
-                      Genres:
+                    <Typography variant="h6" mb={2}>
+                      {book.price} BDT
                     </Typography>
-                    {book.genre.map((genre, index) => (
-                      <Chip key={index} label={genre} className="mr-2" />
-                    ))}
-                  </div>
 
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={book.available}
-                          onChange={(
-                            event: ChangeEvent<HTMLInputElement>,
-                            checked: boolean
-                          ) => {
-                            updateBook({
-                              ...book,
-                              available: checked,
-                            });
-                          }}
-                        />
-                      }
-                      label="Available"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={book.swappable}
-                          onChange={(
-                            event: ChangeEvent<HTMLInputElement>,
-                            checked: boolean
-                          ) => {
-                            updateBook({
-                              ...book,
-                              swappable: checked,
-                            });
-                          }}
-                        />
-                      }
-                      label="Swappable"
-                    />
-                  </FormGroup>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => {
-                      setSelectedBook(book);
-                      // setDialogOpen(true);
-                    }}
-                    sx={{ mt: 2 }}
-                  >
-                    Edit
-                  </Button>
-                </CardContent>
-              </Card>
+                    <div className="mb-2">
+                      <Typography
+                        variant="subtitle2"
+                        color="textSecondary"
+                        component="div"
+                      >
+                        Authors:
+                      </Typography>
+                      {book.authors.map((author, index) => (
+                        <Chip key={index} label={author} className="mr-2" />
+                      ))}
+                    </div>
+
+                    <div className="mb-2">
+                      <Typography
+                        variant="subtitle2"
+                        color="textSecondary"
+                        component="div"
+                      >
+                        Genres:
+                      </Typography>
+                      {book.genre.map((genre, index) => (
+                        <Chip key={index} label={genre} className="mr-2" />
+                      ))}
+                    </div>
+
+                    <FormGroup>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={book.available}
+                            onChange={(
+                              event: ChangeEvent<HTMLInputElement>,
+                              checked: boolean
+                            ) => {
+                              updateBook({
+                                ...book,
+                                available: checked,
+                              });
+                            }}
+                          />
+                        }
+                        label="Available"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={book.swappable}
+                            onChange={(
+                              event: ChangeEvent<HTMLInputElement>,
+                              checked: boolean
+                            ) => {
+                              updateBook({
+                                ...book,
+                                swappable: checked,
+                              });
+                            }}
+                          />
+                        }
+                        label="Swappable"
+                      />
+                    </FormGroup>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setSelectedBook(book);
+                      }}
+                      sx={{ mt: 2 }}
+                    >
+                      Edit
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Link>
             </Grid>
           ))}
         </Grid>

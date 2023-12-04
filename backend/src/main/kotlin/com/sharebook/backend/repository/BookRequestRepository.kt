@@ -18,9 +18,10 @@ interface BookRequestRepository : JpaRepository<BookRequestEntity, Long> {
 
     fun findAllByBook(bookEntity: BookEntity): List<BookRequestEntity>
 
-    fun findByUserAndBookAndRejected(
+    fun findByUserAndBookAndApprovedAndRejected(
         userEntity: UserEntity,
         bookEntity: BookEntity,
+        approved: Boolean,
         rejected: Boolean
     ): BookRequestEntity?
 

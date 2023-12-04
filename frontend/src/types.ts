@@ -34,3 +34,14 @@ export type Review = {
   rating: number;
   review: string;
 };
+
+export type BookRequest = {
+  id: number;
+  book: Book;
+  user: User;
+  swapBook?: Book;
+  createdAt?: string;
+  updatedAt?: string;
+  approved: boolean;
+  rejected: boolean;
+};

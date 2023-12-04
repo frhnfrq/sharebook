@@ -3,6 +3,7 @@ package com.sharebook.backend.services
 import com.sharebook.backend.dto.CreateBookRequestDto
 import com.sharebook.backend.entities.BookEntity
 import com.sharebook.backend.entities.BookExchangeEntity
+import com.sharebook.backend.entities.BookRequestEntity
 import com.sharebook.backend.mappers.*
 import com.sharebook.backend.models.Book
 import com.sharebook.backend.models.BookExchange
@@ -78,7 +79,12 @@ class BookService(
             swapBookEntity = bookRepository.findByIdOrNull(createBookRequestDto.swapBookId)
         }
 
-        val previousRequest = bookRequestRepository.findByUserAndBookAndRejected(user.toUserEntity(), bookEntity, false)
+        val previousRequest = bookRequestRepository.findByUserAndBookAndApprovedAndRejected(
+            user.toUserEntity(),
+            bookEntity,
+            approved = false,
+            rejected = false
+        )
 
         if (previousRequest != null) {
             return Result.failure(Exception("You have already requested for this book"))
@@ -192,6 +198,12 @@ class BookService(
         } else {
             return Result.failure(Exception("Invalid book ID"))
         }
+    }
+
+    fun getBookRequestsForBookId(authentication: Authentication, bookId: Long): Result<List<BookRequest>> {
+        val bookEntity = bookRepository.findById(bookId).get()
+        val requests = bookRequestRepository.findAllByBook(bookEntity)
+        return Result.success(requests.map(BookRequestEntity::toBookRequest))
     }
 
 }

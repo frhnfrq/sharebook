@@ -10,4 +10,6 @@ interface BookExchangeRepository : JpaRepository<BookExchangeEntity, Long> {
     fun findAllByBook(bookEntity: BookEntity): List<BookExchangeEntity>
 
     fun findAllByBookOwnerUser(userEntity: UserEntity): List<BookExchangeEntity>
+
+    fun findAllByBookRenterUser(userEntity: UserEntity): List<BookExchangeEntity>
 }

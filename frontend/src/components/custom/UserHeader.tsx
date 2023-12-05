@@ -9,7 +9,11 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "../ui/navigation-menu";
-import { LogoutRounded, Person2Rounded } from "@mui/icons-material";
+import {
+  LogoutRounded,
+  Person2Rounded,
+  BookOnlineRounded,
+} from "@mui/icons-material";
 import { SearchRounded } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 
@@ -53,7 +57,7 @@ const UserHeader = () => {
                   </div>
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-36 h-40 bg-white rounded-sm flex flex-col">
+                  <div className="w-52 h-40 bg-white rounded-sm flex flex-col">
                     <div className="flex-grow">
                       <NavigationMenuLink
                         className="w-full h-10 hover:bg-slate-200 flex justify-start items-center px-2 cursor-pointer"
@@ -64,6 +68,18 @@ const UserHeader = () => {
                         <div className="flex">
                           <Person2Rounded className="mr-2" />
                           <p>Profile</p>
+                        </div>
+                      </NavigationMenuLink>
+
+                      <NavigationMenuLink
+                        className="w-full h-10 hover:bg-slate-200 flex justify-start items-center px-2 cursor-pointer"
+                        onClick={() => {
+                          navigate("/book-exchanges");
+                        }}
+                      >
+                        <div className="flex">
+                          <BookOnlineRounded className="mr-2" />
+                          <p>Book Exchanges</p>
                         </div>
                       </NavigationMenuLink>
                     </div>

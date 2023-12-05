@@ -155,6 +155,8 @@ class BookService(
             ),
         )
 
+        bookRepository.save(bookRequestEntity.book.copy(onRent = true))
+
         return Result.success(bookExchangeEntity.toBookExchange())
     }
 
@@ -206,4 +208,17 @@ class BookService(
         return Result.success(requests.map(BookRequestEntity::toBookRequest))
     }
 
+    fun getOwnerBookExchanges(authentication: Authentication): Result<List<BookExchange>> {
+        val exchanges =
+            bookExchangeRepository.findAllByBookOwnerUser(authService.getUser(authentication).toUserEntity())
+
+        return Result.success(exchanges.map(BookExchangeEntity::toBookExchange))
+    }
+
+    fun getRenterBookExchanges(authentication: Authentication): Result<List<BookExchange>> {
+        val exchanges =
+            bookExchangeRepository.findAllByBookRenterUser(authService.getUser(authentication).toUserEntity())
+
+        return Result.success(exchanges.map(BookExchangeEntity::toBookExchange))
+    }
 }

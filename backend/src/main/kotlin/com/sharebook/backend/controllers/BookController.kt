@@ -80,8 +80,29 @@ class BookController(
     }
 
     @GetMapping("request/{id}")
-    fun getBookRequestsForBookId(authentication: Authentication, @PathVariable("id") id: Long): ResponseDto<List<BookRequest>> {
+    fun getBookRequestsForBookId(
+        authentication: Authentication,
+        @PathVariable("id") id: Long
+    ): ResponseDto<List<BookRequest>> {
         val result = bookService.getBookRequestsForBookId(authentication, bookId = id)
+        return ResponseDto(result)
+    }
+
+    @GetMapping("exchanges/owner")
+    fun getOwnerBookExchanges(authentication: Authentication): ResponseDto<List<BookExchange>> {
+        val result = bookService.getOwnerBookExchanges(authentication)
+        return ResponseDto(result)
+    }
+
+    @GetMapping("exchanges/renter")
+    fun getRenterBookExchanges(authentication: Authentication): ResponseDto<List<BookExchange>> {
+        val result = bookService.getRenterBookExchanges(authentication)
+        return ResponseDto(result)
+    }
+
+    @PostMapping("exchanges/return/{id}")
+    fun returnBook(authentication: Authentication, @PathVariable("id") id: Long): ResponseDto<BookExchange> {
+        val result = bookService.returnBook(authentication, id)
         return ResponseDto(result)
     }
 

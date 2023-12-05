@@ -45,3 +45,16 @@ export type BookRequest = {
   approved: boolean;
   rejected: boolean;
 };
+
+export type BookExchange = {
+  id: number;
+  book: Book;
+  swapBook?: Book;
+  bookOwnerUser: User;
+  bookRenterUser: User;
+  createdAt: string;
+  dueAt: string;
+  returned: boolean;
+  price: number;
+  bookRequest: BookRequest;
+};

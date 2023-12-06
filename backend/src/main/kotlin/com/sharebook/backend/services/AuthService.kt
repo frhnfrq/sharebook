@@ -28,7 +28,9 @@ class AuthService(
             val user = UserEntity(
                 name = registerDto.name,
                 email = registerDto.email,
-                password = passwordEncoder.encode(registerDto.password)
+                password = passwordEncoder.encode(registerDto.password),
+                address = null,
+                profilePicture = null,
             )
             userRepository.save(user)
 

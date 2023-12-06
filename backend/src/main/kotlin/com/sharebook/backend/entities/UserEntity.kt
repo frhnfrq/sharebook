@@ -22,4 +22,6 @@ data class UserEntity(
     val email: String,
     @Column(nullable = false)
     val password: String,
+    val address: String?,
+    val profilePicture: String?,
 )

@@ -16,6 +16,7 @@ import {
 } from "@mui/icons-material";
 import { SearchRounded } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
+import { imageBaseURL } from "../../network/axios";
 
 const UserHeader = () => {
   const { user, logout } = useAuth();
@@ -41,7 +42,13 @@ const UserHeader = () => {
 
           <Link to={"/user"}>
             <Avatar className="mr-4">
-              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarImage
+                src={
+                  user.profilePicture
+                    ? imageBaseURL + user.profilePicture
+                    : "https://github.com/shadcn.png"
+                }
+              />
               <AvatarFallback className="text-gray-900">
                 {user.name.charAt(0)}
               </AvatarFallback>

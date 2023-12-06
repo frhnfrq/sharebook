@@ -10,9 +10,8 @@ export type User = {
   id: number;
   name: string;
   email: string;
-  profilePictureUrl?: string;
-  gender?: "Male" | "Female";
-  age?: number;
+  profilePicture?: string;
+  address?: string;
 };
 
 export type Book = {

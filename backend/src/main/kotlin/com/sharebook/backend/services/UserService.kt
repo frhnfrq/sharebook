@@ -5,6 +5,7 @@ import com.sharebook.backend.exception.CustomException
 import com.sharebook.backend.exception.ErrorCode
 import com.sharebook.backend.mappers.*
 import com.sharebook.backend.models.Book
+import com.sharebook.backend.models.SafeUser
 import com.sharebook.backend.models.User
 import com.sharebook.backend.models.Wish
 import com.sharebook.backend.repository.UserRepository
@@ -57,5 +58,14 @@ class UserService(
         val user = authService.getUser(authentication)
         wishlistRepository.deleteById(id)
         return Result.success(true)
+    }
+
+    fun editUser(authentication: Authentication, editUser: SafeUser): Result<SafeUser> {
+        val user = authService.getUser(authentication)
+        if (user.id != editUser.id)
+            return Result.failure(Exception("Invalid user"))
+
+        val updatedUser = userRepository.save(editUser.toUser(user.password).toUserEntity())
+        return Result.success(updatedUser.toUser().toSafeUser())
     }
 }

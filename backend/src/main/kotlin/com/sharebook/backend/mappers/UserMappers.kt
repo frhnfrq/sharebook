@@ -12,6 +12,8 @@ fun UserEntity.toUser(): User {
         name = name,
         email = email,
         password = password,
+        address = address,
+        profilePicture = profilePicture
     )
 }
 
@@ -22,6 +24,8 @@ fun User.toUserEntity(): UserEntity {
         name = name,
         email = email,
         password = password,
+        address = address,
+        profilePicture = profilePicture
     )
 }
 
@@ -30,5 +34,18 @@ fun User.toSafeUser(): SafeUser {
         id = id,
         name = name,
         email = email,
+        address = address,
+        profilePicture = profilePicture
+    )
+}
+
+fun SafeUser.toUser(password: String): User {
+    return User(
+        id = id,
+        name = name,
+        email = email,
+        password = password,
+        address = address,
+        profilePicture = profilePicture,
     )
 }

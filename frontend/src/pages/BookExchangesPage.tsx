@@ -6,10 +6,9 @@ import {
   CardContent,
   Button,
   Typography,
-  Grid,
 } from "@mui/material";
 import axios, { imageBaseURL } from "../network/axios";
-import { ApiResponse, Book, User, BookExchange, BookRequest } from "../types";
+import { ApiResponse, BookExchange } from "../types";
 import UserHeader from "../components/custom/UserHeader";
 import toast from "react-hot-toast";
 

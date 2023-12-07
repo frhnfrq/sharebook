@@ -16,6 +16,7 @@ import {
 } from "@mui/icons-material";
 import { SearchRounded } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
+import { ListRounded } from "@mui/icons-material";
 import { imageBaseURL } from "../../network/axios";
 
 const UserHeader = () => {
@@ -87,6 +88,18 @@ const UserHeader = () => {
                         <div className="flex">
                           <BookOnlineRounded className="mr-2" />
                           <p>Book Exchanges</p>
+                        </div>
+                      </NavigationMenuLink>
+
+                      <NavigationMenuLink
+                        className="w-full h-10 hover:bg-slate-200 flex justify-start items-center px-2 cursor-pointer"
+                        onClick={() => {
+                          navigate("/wishlist");
+                        }}
+                      >
+                        <div className="flex">
+                          <ListRounded className="mr-2" />
+                          <p>Wishlist</p>
                         </div>
                       </NavigationMenuLink>
                     </div>

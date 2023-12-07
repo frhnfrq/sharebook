@@ -11,6 +11,7 @@ import { Toaster } from "react-hot-toast";
 import SearchPage from "./pages/SearchPage";
 import BookDetailsPage from "./pages/BookDetailsPage";
 import BookExchangesPage from "./pages/BookExchangesPage";
+import WishlistPage from "./pages/WishlistPage";
 
 function App() {
   const [isMount, setMount] = useState(false);
@@ -70,6 +71,14 @@ function App() {
           element={
             <ProtectedPage>
               <BookExchangesPage />
+            </ProtectedPage>
+          }
+        />
+        <Route
+          path="/wishlist"
+          element={
+            <ProtectedPage>
+              <WishlistPage />
             </ProtectedPage>
           }
         />

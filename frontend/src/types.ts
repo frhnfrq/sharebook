@@ -57,3 +57,9 @@ export type BookExchange = {
   price: number;
   bookRequest: BookRequest;
 };
+
+export type Wish = {
+  id: number;
+  name: string;
+  authors: string[];
+};
